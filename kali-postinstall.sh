@@ -81,11 +81,48 @@ cd arc-theme
 ./autogen.sh --prefix=/usr
 make install
 
+
+cd ../..
 cp kalibg.png /usr/share/backgrounds
 cp .vimrc ~
 
+echo "[+] Updating mate settings..."
+# Terminal 
+gsettings set org.mate.terminal.profile:/org/mate/terminal/profiles/default/ scrollback-unlimited true	# unlimited terminal scrollback
+gsettings set org.mate.terminal.keybindings help 'disabled' # hate hitting help accidently, noone cares
+gsettings set org.mate.terminal.profile:/org/mate/terminal/profiles/default/ background-color $TERMBG
+gsettings set org.mate.terminal.profile:/org/mate/terminal/profiles/default/ foreground-color $TERMFG
+gsettings set org.mate.terminal.profile:/org/mate/terminal/profiles/default/ palette $TERMPAL
+
+gsettings set org.mate.terminal.profile:/org/mate/terminal/profiles/default/ use-theme-colors false
+gsettings set org.mate.terminal.profile:/org/mate/terminal/profiles/default/ bold-color-same-as-fg false
+
+# Disable screensavers!
+gsettings set org.mate.screensaver idle-activation-enabled false	# disable screensave
+gsettings set org.mate.power-manager sleep-display-ac 0				# disable screen sleeping when plugged in
+
+# Wallpaper settings
+gsettings set org.mate.background picture-options 'centered'		# set wallpaper options
+gsettings set org.mate.background picture-filename '/usr/share/backgrounds/kalibg.png'
+gsettings set org.mate.background color-shading-type 'solid'
+gsettings set org.mate.background primary-color '#23231f1f2020'
+
+# Theme and fonts
+gsettings set org.mate.interface gtk-theme 'Arc-Dark'
+gsettings set org.mate.interface icon-theme 'Humanity-Dark'
+gsettings set org.gnome.desktop.wm.preferences theme 'Arc-Dark'
+gsettings set org.mate.Marco.general theme 'Arc-Dark'
+gsettings set org.mate.font-rendering antialiasing 'rgba'
+gsettings set org.mate.font-rendering hinting 'slight'
+gsettings set org.mate.Marco.general titlebar-font 'Ubuntu Medium 11'
+gsettings set org.mate.interface monospace-font-name 'Ubuntu Mono 13'
+gsettings set org.mate.interface font-name 'Ubuntu 11'
+gsettings set org.mate.caja.desktop font 'Ubuntu 11'
 
 
+rm -fr "$SCRIPTDLPATH"
+echo "[*] You need to reboot for the theme, MATE Xsession, and VM tools to fully take effect."
+printf "[*] Before logging in, click the gear (\\u2699 ) icon on the password prompt and select MATE\n"
 
 
 
