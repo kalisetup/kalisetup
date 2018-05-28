@@ -61,72 +61,35 @@ apt-get -qq update
 echo "[+] Installing mate desktop and theme pre-reqs..."
 apt-get -y -qq install mate-core mate-desktop-environment-extra mate-desktop-environment-extras autoconf automake pkg-config libgtk-3-dev gnome-themes-standard gtk2-engines-murrine sublime-text
 
+echo "[+] Downloading themes, icons and fonts..."
+mkdir "$SCRIPTDLPATH" 2>/dev/null
+wget -qO "$SCRIPTDLPATH/font.zip" https://assets.ubuntu.com/v1/fad7939b-ubuntu-font-family-0.83.zip
+wget -qO "$SCRIPTDLPATH/icons.deb" http://ftp.iinet.net.au/pub/ubuntu/pool/main/h/humanity-icon-theme/humanity-icon-theme_0.6.15_all.deb
+git clone -q https://github.com/horst3180/arc-theme --depth 1 "$SCRIPTDLPATH/arc-theme"
 
+echo "[+] Installing theme, icons and fonts..."
+cd "$SCRIPTDLPATH"
+dpkg -i icons.deb
+unzip -qq -d /usr/share/fonts/truetype/ttf-ubuntu font.zip
+fc-cache -f
 
-
-echo ""
-echo "=========================================================================="
-echo "= Setup script for Kali VBox Image                                       ="
-echo "= Personal Prefs for usability                                           ="
-echo "=========================================================================="
-echo ""
-
-
-
-
-
-
-
-
-
-
-
-
-
-##### Location information
-keyboardApple=true         # Using a Apple/Macintosh keyboard? Change to anything other than 'false' to enable
-keyboardlayout="gb"         # Great Britain
-timezone="Europe/London"    # London, Europe
-
-##### (Cosmetic) Colour output
-RED="\033[01;31m"
-GREEN="\033[01;32m"
-YELLOW="\033[01;33m"
-BLUE="\033[01;34m"
-RESET="\033[00m"
-
-##### Updating location information - set either value to "" to skip.
-echo -e "\n$GREEN[+]$RESET Updating location information ~ keyboard layout & time zone ($keyboardlayout & $timezone)"
-#keyboardlayout="gb"         # Great Britain
-#timezone="Europe/London"    # London, Europe
-#--- Configure keyboard layout
-if [ ! -z "$keyboardlayout" ]; then
-  file=/etc/default/keyboard; #[ -e "$file" ] && cp -n $file{,.bkup}
-  sed -i 's/XKBLAYOUT=".*"/XKBLAYOUT="'$keyboardlayout'"/' "$file"
-  [ "$keyboardApple" != "false" ] && sed -i 's/XKBVARIANT=".*"/XKBVARIANT="mac"/' "$file"   ## Enable if you are using Apple based products.
-  #dpkg-reconfigure -f noninteractive keyboard-configuration   #dpkg-reconfigure console-setup   #dpkg-reconfigure keyboard-configuration -u    #need to restart xserver for effect
-fi
+## Build and install arc-theme
+cd arc-theme
+./autogen.sh --prefix=/usr
+make install
 
 
 
 
 
 
-# -----------------------------------------------------------------------------
-# => Install applications
-# -----------------------------------------------------------------------------
-apt-get install zsh terminator
-
-
-#intall ohmyzsh
-
-
-# Settings for the Desktop
-gsettings set org.gnome.desktop.interface clock-show-date true
-gsettings set org.gnome.desktop.interface monospace-font-name "Monospace 10"
-gsettings set org.gnome.desktop.interface document-font-name 'Sans 10'
 
 
 
 
-gsettings set org.gnome.nautilus.icon-view default-zoom-level small
+
+
+
+
+
+
