@@ -17,6 +17,11 @@
 
 VERSION="2018.2"
 
+##### Location information
+keyboardApple=false         # Using a Apple/Macintosh keyboard? Change to anything other than 'false' to enable
+keyboardlayout="gb"         # Great Britain
+timezone="Europe/London"    # London, Europe
+
 # We do VM detection later, default case it false, set manually to true if the 
 # detection fails for you
 VM=false
@@ -44,7 +49,7 @@ then
 	VM=true
 fi
 
-# Setup VM Tools?
+# Setup VM Tools - If VMWare
 #if [ "$VM" == "true" ]
 #then
 #	echo "[+] Installing open-vm-tools..."
@@ -118,6 +123,46 @@ gsettings set org.mate.Marco.general titlebar-font 'Ubuntu Medium 11'
 gsettings set org.mate.interface monospace-font-name 'Ubuntu Mono 13'
 gsettings set org.mate.interface font-name 'Ubuntu 11'
 gsettings set org.mate.caja.desktop font 'Ubuntu 11'
+
+
+
+
+
+## Setting the Keyboard
+echo "[+] Setting up the Keyboard..."
+if [ ! -z "$keyboardlayout" ]; then
+  file=/etc/default/keyboard; #[ -e "$file" ] && cp -n $file{,.bkup}
+  sed -i 's/XKBLAYOUT=".*"/XKBLAYOUT="'$keyboardlayout'"/' "$file"
+  [ "$keyboardApple" != "false" ] && sed -i 's/XKBVARIANT=".*"/XKBVARIANT="mac"/' "$file"   ## Enable if you are using Apple based products.
+  #dpkg-reconfigure -f noninteractive keyboard-configuration   #dpkg-reconfigure console-setup   #dpkg-reconfigure keyboard-configuration -u    #need to restart xserver for effect
+fi
+
+# Keyboard Shorcuts
+gsettings set org.mate.Marco.window-keybindings tile-to-side-e "<Alt>Right"
+gsettings set org.mate.Marco.window-keybindings tile-to-side-w "<Alt>Left"
+gsettings set org.mate.Marco.window-keybindings maximize "<Alt>Up"
+gsettings set org.mate.Marco.window-keybindings unmaximize "<Alt>Down"
+
+
+## Setting up the Clock
+echo "[+] Setting up the Clock..."
+[ -z "$timezone" ] && timezone=Etc/GMT
+ln -sf /usr/share/zoneinfo/$timezone /etc/localtime   #ln -sf /usr/share/zoneinfo/Etc/GMT
+echo "$timezone" > /etc/timezone   #Etc/GMT vs Etc/UTC vs UTC vs Europe/London
+ln -sf "/usr/share/zoneinfo/$(cat /etc/timezone)" /etc/localtime
+apt-get -y -qq install ntp
+systemctl restart ntp.service
+systemctl enable ntp.service
+
+echo "[+] Updating wpscan..."
+wpscan --update
+
+echo "[+] Updating Metasploit..."
+apt-get -y -qq install metasploit-framework
+
+
+echo "[+] Upgrading all packages..."
+apt-get -y upgrade
 
 
 rm -fr "$SCRIPTDLPATH"
