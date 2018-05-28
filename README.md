@@ -3,5 +3,8 @@ Post Installation Setup for Kali
 
 Run:
 ```
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/kalisetup/kalisetup/master/kali-postinstall.sh)"
+git clone https://github.com/kalisetup/kalisetup.git
+cd kalisetup
+chmod +x kalisetup.sh
+./kalisetup.sh
 ```
