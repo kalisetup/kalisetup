@@ -26,6 +26,9 @@ TERMPAL="#000000000000:#CDCB00000000:#0000CDCB0000:#CDCBCDCB0000:#1E1A908FFFFF:#
 TERMBG="#000000000000"
 TERMFG="#FFFFFFFFDDDD"
 
+# Path to download packages etc..
+SCRIPTDLPATH="scriptdls/"
+
 # Check we're root
 if [[ $EUID -ne 0 ]]
 then
