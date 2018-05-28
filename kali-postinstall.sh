@@ -204,6 +204,9 @@ apt-get -y -qq install metasploit-framework
 echo "[+] Upgrading all packages..."
 apt-get -y upgrade
 
+#--- Update slocate database
+updatedb
+
 
 rm -fr "$SCRIPTDLPATH"
 echo "[*] You need to reboot for the theme, MATE Xsession, and VM tools to fully take effect."
