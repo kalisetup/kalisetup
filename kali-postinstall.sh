@@ -78,7 +78,8 @@ cd arc-theme
 ./autogen.sh --prefix=/usr
 make install
 
-
+cp kalibg.png /usr/share/backgrounds
+cp .vimrc ~
 
 
 
