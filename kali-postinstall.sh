@@ -15,6 +15,9 @@
 # https://github.com/P4l1ndr0m/Kali-post-install/blob/master/kali.sh
 # https://github.com/ysf/kali-post-install
 # https://github.com/sourcekris/kali-postinstall/blob/master/kali-postinstall.sh
+#-TODO--------------------------------------------------------------------
+# - Break Script into smaller chunks to run sections as needed
+# - Add section for hardening/Scanning
 
 VERSION="2018.2"
 
