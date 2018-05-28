@@ -12,6 +12,7 @@
 # find some of this stuff useful.
 ## Ideas can be found in these locations:
 # https://github.com/g0tmi1k/os-scripts/blob/master/kali.sh
+# https://github.com/P4l1ndr0m/Kali-post-install/blob/master/kali.sh
 # https://github.com/ysf/kali-post-install
 # https://github.com/sourcekris/kali-postinstall/blob/master/kali-postinstall.sh
 
@@ -125,6 +126,45 @@ gsettings set org.mate.interface font-name 'Ubuntu 11'
 gsettings set org.mate.caja.desktop font 'Ubuntu 11'
 
 
+##### Installing terminator
+echo "[+] Installing terminator ~ multiple terminals in a single window"
+apt-get -y -qq install terminator
+#--- Configure terminator
+mkdir -p /root/.config/terminator/
+file=/root/.config/terminator/config; [ -e "$file" ] && cp -n $file{,.bkup}
+cat <<EOF > "$file"
+[global_config]
+  enabled_plugins = TerminalShot, LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
+[keybindings]
+[profiles]
+  [[default]]
+    background_darkness = 0.9
+    scroll_on_output = False
+    copy_on_selection = True
+    background_type = transparent
+    scrollback_infinite = True
+    show_titlebar = False
+[layouts]
+  [[default]]
+    [[[child1]]]
+      type = Terminal
+      parent = window0
+    [[[window0]]]
+      type = Window
+      parent = ""
+[plugins]
+EOF
+
+##### Installing ZSH & Oh-My-ZSH - root user. 
+echo "[+] Installing ZSH & Oh-My-ZSH ~ unix shell"
+apt-get -y -qq install zsh
+#--- Setup oh-my-zsh
+curl --progress -k -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | sh     #curl -s -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh
+#--- Configure zsh
+file=/root/.zshrc; [ -e "$file" ] && cp -n $file{,.bkup}   #/etc/zsh/zshrc
+
+#--- Configure oh-my-zsh
+sed -i 's/.*DISABLE_AUTO_UPDATE="true"/DISABLE_AUTO_UPDATE="true"/' "$file"
 
 
 
@@ -168,14 +208,3 @@ apt-get -y upgrade
 rm -fr "$SCRIPTDLPATH"
 echo "[*] You need to reboot for the theme, MATE Xsession, and VM tools to fully take effect."
 printf "[*] Before logging in, click the gear (\\u2699 ) icon on the password prompt and select MATE\n"
-
-
-
-
-
-
-
-
-
-
-
